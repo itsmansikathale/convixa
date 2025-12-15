@@ -7,6 +7,11 @@ export default function Home() {
   // State for creating user name
   const [username, setUsername] = useState("");
   const router = useRouter();
+  const handleJoin = () => {
+    const name = username.trim() === "" ? "Anonymous" : username.trim();
+    const meetingId = process.env.NEXT_PUBLIC_CALL_ID;
+    router.push(`/meeting/${meetingId} ?name=${encodeURIComponent(name)}`);
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-gray-900">
@@ -21,7 +26,10 @@ export default function Home() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <button className="mt-5 w-full py-3 bg-gray-900 hover-bg-blue-700 rounded-lg font-md ">
+        <button
+          onClick={handleJoin}
+          className="mt-5 w-full py-3 bg-gray-900 hover-bg-blue-700 rounded-lg font-md "
+        >
           Connect Now
         </button>
       </div>
