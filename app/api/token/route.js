@@ -1,5 +1,4 @@
 import { StreamClient } from "@stream-io/node-sdk";
-import { name } from "@stream-io/video-react-sdk";
 
 // for creating Endpoint like POST or GET
 const apiKey = process.env.STREAM_API_KEY;
@@ -27,7 +26,7 @@ export async function POST(request) {
     };
 
     // Upsert = Update or Insert
-    await serverClient.upsertUser(newUser);
+    await serverClient.upsertUsers([newUser]);
     const validity = 60 * 60 * 24; // 24 hours
     const token = serverClient.generateUserToken({
       user_id: userId,
