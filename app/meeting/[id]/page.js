@@ -1,5 +1,6 @@
 "use client";
 
+import MeetingRoom from "@/app/components/meeting-room";
 import StreamProvider from "@/app/components/stream-provider";
 import { StreamTheme } from "@stream-io/video-react-sdk";
 // This will also be a client component since we are using hooks here
@@ -11,6 +12,7 @@ const MeetingPage = () => {
   // searchParams is for the user name
   const searchParams = useSearchParams();
   //   params is for the id
+  // const rawCallId = params.id;
   const params = useParams();
   const router = useRouter();
 
@@ -72,10 +74,16 @@ const MeetingPage = () => {
     );
   }
 
+  const handleLeave = () => {
+    router.push("/");
+  };
+
   return (
     <StreamProvider user={user} token={token}>
       {/* This will make the call  UI look good */}
-      <StreamTheme>Meeting Room</StreamTheme>
+      <StreamTheme>
+        <MeetingRoom callId={callId} userId={user.id} onLeave={handleLeave} />
+      </StreamTheme>
     </StreamProvider>
   );
 };
