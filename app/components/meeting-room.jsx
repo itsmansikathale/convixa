@@ -7,6 +7,7 @@ import {
   useStreamVideoClient,
 } from "@stream-io/video-react-sdk";
 import React, { useEffect, useRef, useState } from "react";
+import "@stream-io/video-react-sdk/dist/css/styles.css";
 
 const MeetingRoom = ({ callId, onLeave, userId }) => {
   const client = useStreamVideoClient();
@@ -91,6 +92,7 @@ const MeetingRoom = ({ callId, onLeave, userId }) => {
       }
     } catch (error) {}
   };
+
   return (
     <StreamCall call={call}>
       <div className="min-h-screen bg-linear-to-r from-gray-800 via-gray-700 to-gray-800 text-white container mx-auto px-4 py-6">
@@ -98,11 +100,18 @@ const MeetingRoom = ({ callId, onLeave, userId }) => {
           {/* Now lets render our speaker layout */}
           <div className="flex flex-col gap-4">
             {/* Speaker Layout */}
-            <SpeakerLayout />
+            <div className="flex-1 rounded-xl bg-gray-800 border-blue-600 overflow-hidden shadow-2xl">
+              <SpeakerLayout />
+            </div>
             {/* Call Controls */}
-            <CallControls onLeave={handleLeaveClick} />
+            <div className="flex justify-center pb-4 bg-gray-700 rounded-full px-8 py-4 border border-blue-700 shadow-xl w-fit mx-auto">
+              <CallControls onLeave={handleLeaveClick} />
+            </div>
           </div>
           {/* Transcription */}
+          <div className="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl ">
+            Transcription
+          </div>
         </div>
       </div>
     </StreamCall>
