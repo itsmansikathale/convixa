@@ -8,6 +8,7 @@ import {
 } from "@stream-io/video-react-sdk";
 import React, { useEffect, useRef, useState } from "react";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
+import TranscriptPanel from "./transcript";
 
 const MeetingRoom = ({ callId, onLeave, userId }) => {
   const client = useStreamVideoClient();
@@ -36,8 +37,8 @@ const MeetingRoom = ({ callId, onLeave, userId }) => {
             members: [{ user_id: userId, role: "call_member" }],
           },
         });
-        await myCall.join(),
-          await myCall.startClosedCaptions({ language: "en" });
+        await myCall.join();
+        await myCall.startClosedCaptions({ language: "en" });
 
         // we also want to listen if user leaves the call
         myCall.on("call.session_ended", () => {
@@ -80,17 +81,19 @@ const MeetingRoom = ({ callId, onLeave, userId }) => {
   }
 
   const handleLeaveClick = async () => {
-    if (leavingRef.current) {
-      onLeave?.();
-      return;
-    }
+    if (leavingRef.current) return;
+
     leavingRef.current = true;
     try {
       if (call) {
-        await call.startClosedCaptions().catch(() => {});
+        await call.stopClosedCaptions().catch(() => {});
         await call.leave().catch(() => {});
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Leave Call failed", error);
+    } finally {
+      onLeave?.();
+    }
   };
 
   return (
@@ -110,7 +113,7 @@ const MeetingRoom = ({ callId, onLeave, userId }) => {
           </div>
           {/* Transcription */}
           <div className="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl ">
-            Transcription
+            <TranscriptPanel />
           </div>
         </div>
       </div>
